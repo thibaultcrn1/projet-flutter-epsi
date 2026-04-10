@@ -76,6 +76,8 @@ class _GoButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
+    final onSurface = scheme.onSurface;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return GestureDetector(
       onTap: isRunning ? null : onTap,
       child: AnimatedOpacity(
@@ -88,11 +90,13 @@ class _GoButton extends StatelessWidget {
             shape: BoxShape.circle,
             gradient: RadialGradient(
               colors: [
-                Colors.white.withValues(alpha: 0.12),
-                Colors.white.withValues(alpha: 0.02),
+                onSurface.withValues(alpha: isDark ? 0.12 : 0.08),
+                onSurface.withValues(alpha: isDark ? 0.02 : 0.01),
               ],
             ),
-            border: Border.all(color: Colors.white.withValues(alpha: 0.20)),
+            border: Border.all(
+              color: onSurface.withValues(alpha: isDark ? 0.20 : 0.28),
+            ),
             boxShadow: [
               BoxShadow(
                 color: scheme.primary.withValues(alpha: 0.30),
@@ -108,7 +112,7 @@ class _GoButton extends StatelessWidget {
                 fontSize: diameter * 0.34,
                 fontWeight: FontWeight.w900,
                 letterSpacing: 1.8,
-                color: Colors.white,
+                color: onSurface,
               ),
             ),
           ),
@@ -155,7 +159,7 @@ class _GaugePainter extends CustomPainter {
       ..style = PaintingStyle.stroke
       ..strokeWidth = radius * 0.14
       ..strokeCap = StrokeCap.round
-      ..color = Colors.white.withValues(alpha: 0.08);
+      ..color = colorScheme.onSurface.withValues(alpha: 0.10);
     canvas.drawArc(rect, _startAngle, _sweepAngle, false, basePaint);
 
     final arcPaint = Paint()
@@ -183,7 +187,7 @@ class _GaugePainter extends CustomPainter {
 
   void _paintTicks(Canvas canvas, Offset center, double radius) {
     final tickPaint = Paint()
-      ..color = Colors.white.withValues(alpha: 0.18)
+      ..color = colorScheme.onSurface.withValues(alpha: 0.18)
       ..strokeWidth = 2
       ..strokeCap = StrokeCap.round;
 
@@ -205,7 +209,7 @@ class _GaugePainter extends CustomPainter {
 
   void _paintNeedle(Canvas canvas, Offset center, double radius, double angle) {
     final needlePaint = Paint()
-      ..color = Colors.white.withValues(alpha: 0.92)
+      ..color = colorScheme.onSurface.withValues(alpha: 0.92)
       ..strokeWidth = radius * 0.03
       ..strokeCap = StrokeCap.round;
 
@@ -227,7 +231,7 @@ class _GaugePainter extends CustomPainter {
       ..color = const Color(0xFF0B1224)
       ..style = PaintingStyle.fill;
     final hubBorder = Paint()
-      ..color = Colors.white.withValues(alpha: 0.22)
+      ..color = colorScheme.onSurface.withValues(alpha: 0.22)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 2;
 
@@ -252,7 +256,7 @@ class _GaugePainter extends CustomPainter {
       text: TextSpan(
         text: valueText,
         style: TextStyle(
-          color: Colors.white,
+          color: colorScheme.onSurface,
           fontSize: size.width * 0.14,
           fontWeight: FontWeight.w800,
           height: 1.0,
@@ -266,7 +270,7 @@ class _GaugePainter extends CustomPainter {
       text: TextSpan(
         text: 'Mbps',
         style: TextStyle(
-          color: Colors.white.withValues(alpha: 0.70),
+          color: colorScheme.onSurface.withValues(alpha: 0.70),
           fontSize: size.width * 0.040,
           fontWeight: FontWeight.w700,
           letterSpacing: 0.8,
@@ -280,7 +284,7 @@ class _GaugePainter extends CustomPainter {
       text: TextSpan(
         text: isRunning ? phase : '',
         style: TextStyle(
-          color: Colors.white.withValues(alpha: 0.62),
+          color: colorScheme.onSurface.withValues(alpha: 0.62),
           fontSize: size.width * 0.034,
           fontWeight: FontWeight.w700,
           letterSpacing: 1.3,
@@ -294,7 +298,7 @@ class _GaugePainter extends CustomPainter {
       text: TextSpan(
         text: 'max ${maxMbps.toStringAsFixed(0)}',
         style: TextStyle(
-          color: Colors.white.withValues(alpha: 0.38),
+          color: colorScheme.onSurface.withValues(alpha: 0.38),
           fontSize: size.width * 0.030,
           fontWeight: FontWeight.w600,
           letterSpacing: 0.6,

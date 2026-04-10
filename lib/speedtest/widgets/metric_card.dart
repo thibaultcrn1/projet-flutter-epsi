@@ -20,17 +20,21 @@ class MetricCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
     final a = accent ?? scheme.primary;
+    final onSurface = scheme.onSurface;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.10)),
+        border: Border.all(
+          color: onSurface.withValues(alpha: isDark ? 0.10 : 0.14),
+        ),
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            Colors.white.withValues(alpha: 0.06),
-            Colors.white.withValues(alpha: 0.03),
+            onSurface.withValues(alpha: isDark ? 0.06 : 0.04),
+            onSurface.withValues(alpha: isDark ? 0.03 : 0.02),
           ],
         ),
       ),
@@ -56,7 +60,7 @@ class MetricCard extends StatelessWidget {
                   title.toUpperCase(),
                   style: Theme.of(context).textTheme.labelSmall?.copyWith(
                     letterSpacing: 1.2,
-                    color: Colors.white.withValues(alpha: 0.62),
+                    color: onSurface.withValues(alpha: 0.62),
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -80,7 +84,7 @@ class MetricCard extends StatelessWidget {
                         unit,
                         style: Theme.of(context).textTheme.labelMedium
                             ?.copyWith(
-                              color: Colors.white.withValues(alpha: 0.70),
+                              color: onSurface.withValues(alpha: 0.70),
                               fontWeight: FontWeight.w600,
                             ),
                       ),

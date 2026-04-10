@@ -5,7 +5,14 @@ import 'widgets/metric_card.dart';
 import 'widgets/speed_gauge.dart';
 
 class SpeedtestScreen extends StatefulWidget {
-  const SpeedtestScreen({super.key});
+  const SpeedtestScreen({
+    super.key,
+    required this.isDarkMode,
+    required this.onToggleTheme,
+  });
+
+  final bool isDarkMode;
+  final VoidCallback onToggleTheme;
 
   @override
   State<SpeedtestScreen> createState() => _SpeedtestScreenState();
@@ -46,18 +53,20 @@ class _SpeedtestScreenState extends State<SpeedtestScreen> {
   @override
   Widget build(BuildContext context) {
     final safe = MediaQuery.of(context).padding;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
       body: Stack(
         children: [
-          // Background (gradient + vignette)
           Positioned.fill(
             child: DecoratedBox(
               decoration: BoxDecoration(
                 gradient: RadialGradient(
                   center: const Alignment(0.0, -0.55),
                   radius: 1.05,
-                  colors: [const Color(0xFF0B1734), const Color(0xFF070B14)],
+                  colors: isDark
+                      ? [const Color(0xFF0B1734), const Color(0xFF070B14)]
+                      : [const Color(0xFFDDE8FF), const Color(0xFFF4F8FF)],
                 ),
               ),
             ),
@@ -69,8 +78,10 @@ class _SpeedtestScreenState extends State<SpeedtestScreen> {
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
-                    Colors.black.withValues(alpha: 0.00),
-                    Colors.black.withValues(alpha: 0.38),
+                    (isDark ? Colors.black : Colors.white).withValues(alpha: 0.00),
+                    (isDark ? Colors.black : Colors.white).withValues(
+                      alpha: isDark ? 0.38 : 0.32,
+                    ),
                   ],
                 ),
               ),
@@ -89,6 +100,8 @@ class _SpeedtestScreenState extends State<SpeedtestScreen> {
                       _TopBar(
                         isRunning: _controller.isRunning,
                         onReset: _controller.reset,
+                        isDarkMode: widget.isDarkMode,
+                        onToggleTheme: widget.onToggleTheme,
                       ),
                       const SizedBox(height: 16),
                       Expanded(
@@ -155,7 +168,7 @@ class _SpeedtestScreenState extends State<SpeedtestScreen> {
                                               .labelLarge
                                               ?.copyWith(
                                                 color: Colors.white.withValues(
-                                                  alpha: 0.62,
+                                                  alpha: isDark ? 0.62 : 0.82,
                                                 ),
                                                 fontWeight: FontWeight.w600,
                                               ),
@@ -185,10 +198,17 @@ class _SpeedtestScreenState extends State<SpeedtestScreen> {
 }
 
 class _TopBar extends StatelessWidget {
-  const _TopBar({required this.isRunning, required this.onReset});
+  const _TopBar({
+    required this.isRunning,
+    required this.onReset,
+    required this.isDarkMode,
+    required this.onToggleTheme,
+  });
 
   final bool isRunning;
   final VoidCallback onReset;
+  final bool isDarkMode;
+  final VoidCallback onToggleTheme;
 
   @override
   Widget build(BuildContext context) {
@@ -203,11 +223,19 @@ class _TopBar extends StatelessWidget {
         ),
         const Spacer(),
         IconButton(
+          onPressed: onToggleTheme,
+          tooltip: isDarkMode ? 'Passer en clair' : 'Passer en sombre',
+          icon: Icon(
+            isDarkMode ? Icons.light_mode_rounded : Icons.dark_mode_rounded,
+            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.85),
+          ),
+        ),
+        IconButton(
           onPressed: isRunning ? null : onReset,
           tooltip: 'Réinitialiser',
           icon: Icon(
             Icons.refresh_rounded,
-            color: Colors.white.withValues(alpha: 0.85),
+            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.85),
           ),
         ),
       ],
@@ -298,12 +326,13 @@ class _BottomHint extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.10)),
-        color: Colors.white.withValues(alpha: 0.03),
+        border: Border.all(color: scheme.onSurface.withValues(alpha: 0.10)),
+        color: scheme.onSurface.withValues(alpha: 0.03),
       ),
       child: Row(
         children: [
@@ -312,7 +341,7 @@ class _BottomHint extends StatelessWidget {
                 ? Icons.wifi_tethering_rounded
                 : Icons.info_outline_rounded,
             size: 18,
-            color: Colors.white.withValues(alpha: 0.72),
+            color: scheme.onSurface.withValues(alpha: 0.72),
           ),
           const SizedBox(width: 10),
           Expanded(
@@ -321,7 +350,7 @@ class _BottomHint extends StatelessWidget {
                   ? 'Mesure reseau en cours (ping/download/upload).'
                   : 'Mode reel actif. Tu peux aussi passer en mode manuel.',
               style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                color: Colors.white.withValues(alpha: 0.62),
+                color: scheme.onSurface.withValues(alpha: 0.72),
                 fontWeight: FontWeight.w600,
               ),
             ),
