@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:speedtest_app/speedtest/speedtest_screen.dart';
+import 'package:speedtest_app/speedtest/screens/speedtest_screen.dart';
 
 void main() {
   Future<void> pumpScreen(WidgetTester tester) async {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'speedtest/speedtest_screen.dart';
+import 'speedtest/screens/speedtest_screen.dart';
 
 void main() {
   runApp(const MyApp());

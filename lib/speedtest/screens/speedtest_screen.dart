@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'speedtest_controller.dart';
-import 'widgets/metric_card.dart';
-import 'widgets/speed_gauge.dart';
+import '../controllers/speedtest_controller.dart';
+import '../widgets/metric_card.dart';
+import '../widgets/speed_gauge.dart';
 
 class SpeedtestScreen extends StatefulWidget {
   const SpeedtestScreen({
@@ -78,7 +78,9 @@ class _SpeedtestScreenState extends State<SpeedtestScreen> {
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
-                    (isDark ? Colors.black : Colors.white).withValues(alpha: 0.00),
+                    (isDark ? Colors.black : Colors.white).withValues(
+                      alpha: 0.00,
+                    ),
                     (isDark ? Colors.black : Colors.white).withValues(
                       alpha: isDark ? 0.38 : 0.32,
                     ),
@@ -227,7 +229,9 @@ class _TopBar extends StatelessWidget {
           tooltip: isDarkMode ? 'Passer en clair' : 'Passer en sombre',
           icon: Icon(
             isDarkMode ? Icons.light_mode_rounded : Icons.dark_mode_rounded,
-            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.85),
+            color: Theme.of(
+              context,
+            ).colorScheme.onSurface.withValues(alpha: 0.85),
           ),
         ),
         IconButton(
@@ -235,7 +239,9 @@ class _TopBar extends StatelessWidget {
           tooltip: 'Réinitialiser',
           icon: Icon(
             Icons.refresh_rounded,
-            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.85),
+            color: Theme.of(
+              context,
+            ).colorScheme.onSurface.withValues(alpha: 0.85),
           ),
         ),
       ],

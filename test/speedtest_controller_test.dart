@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:speedtest_app/speedtest/speedtest_controller.dart';
+import 'package:speedtest_app/speedtest/controllers/speedtest_controller.dart';
 
 void main() {
   group('SpeedtestMetrics', () {
@@ -62,4 +62,3 @@ void main() {
     });
   });
 }
-
