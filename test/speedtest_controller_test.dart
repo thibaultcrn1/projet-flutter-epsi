@@ -1,10 +1,10 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:speedtest_app/speedtest/speedtest_demo.dart';
+import 'package:speedtest_app/speedtest/speedtest_controller.dart';
 
 void main() {
-  group('DemoMetrics', () {
+  group('SpeedtestMetrics', () {
     test('copyWith met a jour uniquement les champs fournis', () {
-      const initial = DemoMetrics(
+      const initial = SpeedtestMetrics(
         pingMs: 12,
         downloadMbps: 120,
         uploadMbps: 45,
@@ -18,11 +18,11 @@ void main() {
     });
   });
 
-  group('SpeedtestDemoController', () {
+  group('SpeedtestController', () {
     test('etat initial correct', () {
-      final c = SpeedtestDemoController();
+      final c = SpeedtestController();
 
-      expect(c.phase, DemoPhase.idle);
+      expect(c.phase, SpeedtestPhase.idle);
       expect(c.isRunning, isFalse);
       expect(c.gaugeValueMbps, 0);
       expect(c.metrics.pingMs, isNull);
@@ -33,7 +33,7 @@ void main() {
     });
 
     test('mode manuel active reset et garde le controle de jauge', () {
-      final c = SpeedtestDemoController();
+      final c = SpeedtestController();
 
       c.setManualMode(true);
       c.setManualValue(345.0);
@@ -46,13 +46,13 @@ void main() {
     });
 
     test('reset remet l etat a zero', () {
-      final c = SpeedtestDemoController();
+      final c = SpeedtestController();
 
       c.setManualMode(true);
       c.setManualValue(500.0);
       c.reset();
 
-      expect(c.phase, DemoPhase.idle);
+      expect(c.phase, SpeedtestPhase.idle);
       expect(c.gaugeValueMbps, 0);
       expect(c.metrics.pingMs, isNull);
       expect(c.metrics.downloadMbps, isNull);

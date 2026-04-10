@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'speedtest_demo.dart';
+import 'speedtest_controller.dart';
 import 'widgets/metric_card.dart';
 import 'widgets/speed_gauge.dart';
 
@@ -19,12 +19,12 @@ class SpeedtestScreen extends StatefulWidget {
 }
 
 class _SpeedtestScreenState extends State<SpeedtestScreen> {
-  late final SpeedtestDemoController _controller;
+  late final SpeedtestController _controller;
 
   @override
   void initState() {
     super.initState();
-    _controller = SpeedtestDemoController();
+    _controller = SpeedtestController();
   }
 
   @override
@@ -33,19 +33,19 @@ class _SpeedtestScreenState extends State<SpeedtestScreen> {
     super.dispose();
   }
 
-  String _phaseLabel(DemoPhase phase) {
+  String _phaseLabel(SpeedtestPhase phase) {
     switch (phase) {
-      case DemoPhase.idle:
+      case SpeedtestPhase.idle:
         return 'Prêt';
-      case DemoPhase.ping:
+      case SpeedtestPhase.ping:
         return 'Ping';
-      case DemoPhase.download:
+      case SpeedtestPhase.download:
         return 'Download';
-      case DemoPhase.upload:
+      case SpeedtestPhase.upload:
         return 'Upload';
-      case DemoPhase.done:
+      case SpeedtestPhase.done:
         return 'Terminé';
-      case DemoPhase.error:
+      case SpeedtestPhase.error:
         return 'Erreur';
     }
   }
@@ -138,7 +138,7 @@ class _SpeedtestScreenState extends State<SpeedtestScreen> {
                                         _DemoControls(controller: _controller),
                                         const SizedBox(height: 14),
                                         if (_controller.phase ==
-                                                DemoPhase.error &&
+                                                SpeedtestPhase.error &&
                                             (_controller.errorMessage ?? '')
                                                 .isNotEmpty)
                                           Padding(
@@ -246,7 +246,7 @@ class _TopBar extends StatelessWidget {
 class _MetricsGrid extends StatelessWidget {
   const _MetricsGrid({required this.metrics});
 
-  final DemoMetrics metrics;
+  final SpeedtestMetrics metrics;
 
   String _fmtMs(double? v) {
     if (v == null) return '—';
@@ -364,7 +364,7 @@ class _BottomHint extends StatelessWidget {
 class _DemoControls extends StatelessWidget {
   const _DemoControls({required this.controller});
 
-  final SpeedtestDemoController controller;
+  final SpeedtestController controller;
 
   @override
   Widget build(BuildContext context) {
